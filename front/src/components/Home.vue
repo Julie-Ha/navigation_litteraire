@@ -16,7 +16,7 @@ export default {
   },
   data() {
     return {
-      text: "Six mois se passèrent encore ; et, l’année d’après, Charles fut définitivement envoyé au collège de Rouen, où son père l’amena lui-même, vers la fin d’octobre, à l’époque de la foire Saint-Romain.",
+      text: "text",
       locations: "",
     };
   },

@@ -19,7 +19,6 @@
 
 <script>
 import { LMap, LTileLayer, LGeoJson } from "vue2-leaflet";
-// import axios from "axios";
 
 export default {
   name: "Example",
@@ -50,7 +49,7 @@ export default {
       };
     },
     styleFunction() {
-      const fillColor = this.fillColor; // important! need touch fillColor in computed for re-calculate when change fillColor
+      const fillColor = this.fillColor;
       return () => {
         return {
           weight: 2,
