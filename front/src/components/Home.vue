@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    {{ text }}
+    <div v-html="text">{{ text }}</div>
     <Map v-if="locations" :locations="locations" />
   </div>
 </template>
@@ -24,7 +24,9 @@ export default {
     await axios
       .get("http://127.0.0.1:5000/get-annotated-text?text=" + this.text)
       .then((response) => {
-        this.locations = response.data;
+        console.log(response.data)
+        this.locations = response.data.locations;
+        this.text = response.data.text;
       })
       .catch((e) => {
         this.errors.push(e);
@@ -32,3 +34,9 @@ export default {
   },
 };
 </script>
+<style>
+.loc {
+  color: red;
+  font-weight: bold;
+}
+</style>

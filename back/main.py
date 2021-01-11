@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import spacy
+import json
 
 nlp = spacy.load("fr_core_news_lg")
 
@@ -20,18 +21,30 @@ def getAnnotatedText():
      for line in f.readlines()[50:100]:
           text = text + line
 
-    print(text)
-
     doc = nlp(text)
     
     locations = []
 
-    for ent in doc.ents:
-        if ent.label_ == "LOC":
-            if ent.text not in locations:
-                locations.append(ent.text)
+    annotations = "<p>"
+    for token in doc:
+        if token.ent_type_ == "LOC":
+            annotations = annotations + '<span class="loc">' + token.text + '</span>'+ ' '
+            locations.append(token.text)
+        else:
+            annotations = annotations + token.text + ' '
+    annotations = annotations + "</p>"
 
-    return jsonify(locations)
+    # for ent in doc.ents:
+    #     if ent.label_ == "LOC":
+    #         if ent.text not in locations:
+    #             locations.append(ent.text)
+
+    data = {}
+    data['locations'] = locations
+    data['text'] =  annotations
+    json_data = json.dumps(data)
+
+    return json_data
 
 
 if __name__ == "__main__":
