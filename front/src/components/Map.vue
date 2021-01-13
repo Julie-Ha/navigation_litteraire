@@ -80,16 +80,17 @@ export default {
     this.loading = true;
 
     let json = [];
-    console.log(this.locations);
     this.locations.forEach(async (location) => {
       const response = await fetch(
         "https://api-adresse.data.gouv.fr/search/?q=" + location
       );
+      
       let j = await response.json();
 
-      json.push(j.features[0]);
+      if(j.features.length > 0) {
+        json.push(j.features[0]);
+      }
     });
-    console.log(json);
 
     this.geojson = json;
     this.loading = false;

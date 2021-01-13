@@ -5,38 +5,139 @@
         <div v-html="text">{{ text }}</div>
       </div>
       <div class="col-sm-6 offset-sm-6 fixed-top">
-        <Map v-if="locations" :locations="locations" />
+        <label>N° de ligne </label>
+        <input v-model="line" type="number" name="line" min="0" />
+        <b-button type="submit" @click="loadText()" class="btnVal">OK</b-button>
+        <div>
+          <div>{{ locations }}</div>
+          <div>
+            <span v-if="loading">Loading...</span>
+            <br />
+          </div>
+          <l-map
+            :zoom="zoom"
+            :center="center"
+            style="height: 500px; width: 100%"
+          >
+            <l-tile-layer :url="url" :attribution="attribution" />
+            <l-geo-json
+              v-if="show"
+              :geojson="geojson"
+              :options="options"
+              :options-style="styleFunction"
+            />
+          </l-map>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Map from "./Map.vue";
 import axios from "axios";
+import { LMap, LTileLayer, LGeoJson } from "vue2-leaflet";
 
 export default {
   name: "Home",
   components: {
-    Map,
+    LMap,
+    LTileLayer,
+    LGeoJson,
   },
   data() {
     return {
+      textFile: "text",
       text: "text",
-      locations: "",
+      line: 0,
+      locations: [],
+      loaded: false,
+      loading: false,
+      show: true,
+      enableTooltip: true,
+      zoom: 6,
+      center: [48, -1.219482],
+      geojson: null,
+      fillColor: "#e4ce7f",
+      url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      attribution:
+        '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
     };
   },
-  async created() {
-    await axios
-      .get("http://127.0.0.1:5000/get-annotated-text?text=" + this.text)
-      .then((response) => {
-        console.log(response.data);
-        this.locations = response.data.locations;
-        this.text = response.data.text;
-      })
-      .catch((e) => {
-        this.errors.push(e);
+  methods: {
+    async loadText() {
+      this.locations = [];
+
+      await axios
+        .get(
+          "http://127.0.0.1:5000/get-annotated-text?text=" +
+            this.textFile +
+            "&line=" +
+            this.line
+        )
+        .then((response) => {
+          this.locations = response.data.locations;
+          this.text = response.data.text;
+        });
+
+      this.loading = true;
+
+      let json = [];
+      this.locations.forEach(async (location) => {
+        const response = await fetch(
+          "https://api-adresse.data.gouv.fr/search/?q=" + location
+        );
+
+        let j = await response.json();
+
+        if (j.features.length > 0) {
+          json.push(j.features[0]);
+        }
       });
+
+      this.geojson = json;
+      this.loading = false;
+
+      setTimeout(() => {
+        this.loaded = true;
+      }, 1000);
+    },
+  },
+  computed: {
+    options() {
+      return {
+        onEachFeature: this.onEachFeatureFunction,
+      };
+    },
+    styleFunction() {
+      const fillColor = this.fillColor;
+      return () => {
+        return {
+          weight: 2,
+          color: "#ECEFF1",
+          opacity: 1,
+          fillColor: fillColor,
+          fillOpacity: 1,
+        };
+      };
+    },
+    onEachFeatureFunction() {
+      if (!this.enableTooltip) {
+        return () => {};
+      }
+      return (feature, layer) => {
+        layer.bindTooltip(
+          "<div>total:" +
+            feature.properties.total +
+            "</div><div>nom: " +
+            feature.properties.name +
+            "</div>",
+          { permanent: false, sticky: true }
+        );
+      };
+    },
+  },
+  async created() {
+    this.loadText();
   },
 };
 </script>
@@ -45,5 +146,4 @@ export default {
   color: red;
   font-weight: bold;
 }
-
 </style>

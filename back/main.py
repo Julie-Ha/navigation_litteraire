@@ -15,11 +15,13 @@ def index():
 @app.route('/get-annotated-text')
 def getAnnotatedText():
     text = request.args.get('text')
+    line = request.args.get('line', default=0, type=int)
+    print(request.args.get('line'))
 
     with open("texts/bovary.txt", "r", encoding="utf-8") as f:
      text = ""
-     for line in f.readlines()[50:100]:
-          text = text + line
+     for l in f.readlines()[line:line+50]:
+          text = text + l
 
     doc = nlp(text)
     
@@ -28,10 +30,14 @@ def getAnnotatedText():
     annotations = "<p>"
     for token in doc:
         if token.ent_type_ == "LOC":
-            annotations = annotations + '<span class="loc">' + token.text + '</span>'+ ' '
+            annotations = annotations + ' ' + '<span class="loc">' + token.text + '</span>'
             locations.append(token.text)
+        elif token.text == "," or token.text == "." or token.text == ";":
+            annotations = annotations + token.text 
+        elif token.text == "—":
+            annotations = annotations + '<br>' + token.text 
         else:
-            annotations = annotations + token.text + ' '
+            annotations = annotations + ' ' + token.text 
     annotations = annotations + "</p>"
 
     # for ent in doc.ents:
