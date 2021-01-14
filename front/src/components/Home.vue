@@ -2,14 +2,10 @@
   <div class="home">
     <div class="row">
       <div class="col-sm-6">
-        <div v-html="text">{{ text }}</div>
+        <div class="text" v-html="text">{{ text }}</div>
       </div>
-      <div class="col-sm-6 offset-sm-6 fixed-top">
-        <label>N° de ligne </label>
-        <input v-model="line" type="number" name="line" min="0" />
-        <b-button type="submit" @click="loadText()" class="btnVal">OK</b-button>
+      <div class="map col-sm-6 offset-sm-6 fixed-top">
         <div>
-          <div>{{ locations }}</div>
           <div>
             <span v-if="loading">Loading...</span>
             <br />
@@ -27,6 +23,12 @@
               :options-style="styleFunction"
             />
           </l-map>
+          <label>N° de ligne </label>
+          <input v-model="line" type="number" name="line" min="0" />
+          <b-button type="submit" @click="loadText()" class="btnVal"
+            >OK</b-button
+          >
+          <div>{{ locations }}</div>
         </div>
       </div>
     </div>
@@ -145,5 +147,14 @@ export default {
 .loc {
   color: red;
   font-weight: bold;
+}
+
+.text {
+  text-align: justify;
+  margin: 1rem 2rem;
+}
+
+.map {
+  margin-top: 4rem;
 }
 </style>
