@@ -14,7 +14,7 @@ def index():
 
 @app.route('/get-annotated-text')
 def getAnnotatedText():
-    text = request.args.get('text')
+    textFile = request.args.get('text')
     line = request.args.get('line', default=0, type=int)
     print(request.args.get('line'))
 
@@ -40,17 +40,33 @@ def getAnnotatedText():
             annotations = annotations + ' ' + token.text 
     annotations = annotations + "</p>"
 
-    # for ent in doc.ents:
-    #     if ent.label_ == "LOC":
-    #         if ent.text not in locations:
-    #             locations.append(ent.text)
-
     data = {}
     data['locations'] = locations
     data['text'] =  annotations
     json_data = json.dumps(data)
 
     return json_data
+
+@app.route('/get-locations')
+def getLocations():
+    textFile = request.args.get('text')
+
+    # text = []
+    # with open("texts/bovary.txt", "r", encoding="utf-8") as f:
+    #     text = f.readlines()
+
+    text = open("texts/bovary.txt", 'r', encoding="utf-8").read()
+
+    doc = nlp(text)
+    
+    locations = []
+
+    for ent in doc.ents:
+        if ent.label_ == "LOC":
+            if ent.text not in locations:
+                locations.append(ent.text)
+
+    return jsonify(locations)
 
 if __name__ == "__main__":
     app.run()

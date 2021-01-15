@@ -1,17 +1,12 @@
 <template>
   <div class="home">
     <div class="row">
-      <div class="col-sm-6">
-        <div class="text" v-html="text">{{ text }}</div>
+      <div class="col-sm-6 mt-2">
+        <div class="locations">{{ locations }}</div>
       </div>
 
       <div class="map col-sm-6 offset-sm-6 fixed-top">
-        <Map :locations="locations" />
-
-        <label>N° de ligne </label>
-        <input v-model="line" type="number" name="line" min="0" />
-        <b-button type="submit" @click="loadText()" class="btnVal">OK</b-button>
-        <div>{{ locations }}</div>
+        <Map :locations="selectedLocations" />
       </div>
     </div>
   </div>
@@ -29,32 +24,24 @@ export default {
   data() {
     return {
       textFile: "text",
-      text: "text",
-      line: 0,
       locations: [],
+      selectedLocations: [],
       loaded: false,
     };
   },
   methods: {
-    async loadText() {
+    async loadLocations() {
       this.locations = [];
 
       await axios
-        .get(
-          "http://127.0.0.1:5000/get-annotated-text?text=" +
-            this.textFile +
-            "&line=" +
-            this.line
-        )
+        .get("http://127.0.0.1:5000/get-locations?text=" + this.textFile)
         .then((response) => {
-          this.locations = response.data.locations;
-          this.text = response.data.text;
+          this.locations = response.data;
         });
-
     },
   },
   async created() {
-    this.loadText();
+    this.loadLocations();
   },
 };
 </script>
