@@ -4,32 +4,14 @@
       <div class="col-sm-6">
         <div class="text" v-html="text">{{ text }}</div>
       </div>
+
       <div class="map col-sm-6 offset-sm-6 fixed-top">
-        <div>
-          <div>
-            <span v-if="loading">Loading...</span>
-            <br />
-          </div>
-          <l-map
-            :zoom="zoom"
-            :center="center"
-            style="height: 500px; width: 100%"
-          >
-            <l-tile-layer :url="url" :attribution="attribution" />
-            <l-geo-json
-              v-if="show"
-              :geojson="geojson"
-              :options="options"
-              :options-style="styleFunction"
-            />
-          </l-map>
-          <label>N° de ligne </label>
-          <input v-model="line" type="number" name="line" min="0" />
-          <b-button type="submit" @click="loadText()" class="btnVal"
-            >OK</b-button
-          >
-          <div>{{ locations }}</div>
-        </div>
+        <Map :locations="locations" />
+
+        <label>N° de ligne </label>
+        <input v-model="line" type="number" name="line" min="0" />
+        <b-button type="submit" @click="loadText()" class="btnVal">OK</b-button>
+        <div>{{ locations }}</div>
       </div>
     </div>
   </div>
@@ -37,14 +19,12 @@
 
 <script>
 import axios from "axios";
-import { LMap, LTileLayer, LGeoJson } from "vue2-leaflet";
+import Map from "./Map";
 
 export default {
   name: "Home",
   components: {
-    LMap,
-    LTileLayer,
-    LGeoJson,
+    Map,
   },
   data() {
     return {
@@ -53,16 +33,6 @@ export default {
       line: 0,
       locations: [],
       loaded: false,
-      loading: false,
-      show: true,
-      enableTooltip: true,
-      zoom: 6,
-      center: [48, -1.219482],
-      geojson: null,
-      fillColor: "#e4ce7f",
-      url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-      attribution:
-        '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
     };
   },
   methods: {
@@ -96,46 +66,6 @@ export default {
         }
       });
 
-      this.geojson = json;
-      this.loading = false;
-
-      setTimeout(() => {
-        this.loaded = true;
-      }, 1000);
-    },
-  },
-  computed: {
-    options() {
-      return {
-        onEachFeature: this.onEachFeatureFunction,
-      };
-    },
-    styleFunction() {
-      const fillColor = this.fillColor;
-      return () => {
-        return {
-          weight: 2,
-          color: "#ECEFF1",
-          opacity: 1,
-          fillColor: fillColor,
-          fillOpacity: 1,
-        };
-      };
-    },
-    onEachFeatureFunction() {
-      if (!this.enableTooltip) {
-        return () => {};
-      }
-      return (feature, layer) => {
-        layer.bindTooltip(
-          "<div>total:" +
-            feature.properties.total +
-            "</div><div>nom: " +
-            feature.properties.name +
-            "</div>",
-          { permanent: false, sticky: true }
-        );
-      };
     },
   },
   async created() {
