@@ -12,6 +12,7 @@
           <b-navbar-nav>
             <b-nav-item to="/">Texte</b-nav-item>
             <b-nav-item to="/locations">Lieux</b-nav-item>
+            <b-nav-item to="/itinerary">Itinéraires</b-nav-item>
           </b-navbar-nav>
         </div>
       </b-collapse>

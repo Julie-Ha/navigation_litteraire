@@ -90,9 +90,7 @@ export default {
       }
       return (feature, layer) => {
         layer.bindTooltip(
-          "<div>total:" +
-            feature.properties.total +
-            "</div><div>nom: " +
+          "<div>" +
             feature.properties.name +
             "</div>",
           { permanent: false, sticky: true }
