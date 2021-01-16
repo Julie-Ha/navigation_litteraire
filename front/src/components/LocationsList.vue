@@ -2,7 +2,20 @@
   <div class="home">
     <div class="row">
       <div class="col-sm-6 mt-2">
-        <div class="locations">{{ locations }}</div>
+        <div class="locations">
+          <b-list-group>
+            <b-list-group-item v-for="location in locations" :key="location">
+              <b-form-checkbox
+                type="checkbox"
+                class="text-left"
+                :id="location"
+                :value="location"
+                v-model="selectedLocations"
+                >{{ location }}</b-form-checkbox
+              >
+            </b-list-group-item>
+          </b-list-group>
+        </div>
       </div>
 
       <div class="map col-sm-6 offset-sm-6 fixed-top">
@@ -17,7 +30,7 @@ import axios from "axios";
 import Map from "./Map";
 
 export default {
-  name: "Home",
+  name: "LocationsList",
   components: {
     Map,
   },
@@ -46,14 +59,8 @@ export default {
 };
 </script>
 <style>
-.loc {
-  color: red;
-  font-weight: bold;
-}
-
-.text {
-  text-align: justify;
-  margin: 1rem 2rem;
+.locations {
+  margin: 1.25rem 2rem;
 }
 
 .map {

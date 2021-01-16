@@ -18,9 +18,9 @@
 
 <script>
 import { LMap, LTileLayer, LGeoJson } from "vue2-leaflet";
-// import axios from "axios";
+
 export default {
-  name: "Example",
+  name: "Map",
   props: ["locations"],
   components: {
     LMap,
