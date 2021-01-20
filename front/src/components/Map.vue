@@ -59,7 +59,6 @@ export default {
           json.push(j.features[0]);
         }
       });
-      console.log(json);
       this.geojson = json;
       this.loading = false;
     },

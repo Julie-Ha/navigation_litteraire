@@ -26,7 +26,7 @@ def getAnnotatedText():
     line = request.args.get('line', default=0, type=int)
     print(request.args.get('line'))
 
-    with open("texts/bovary.txt", "r", encoding="utf-8") as f:
+    with open("texts/"+textFile+".txt", "r", encoding="utf-8") as f:
      text = ""
      for l in f.readlines()[line:line+50]:
           text = text + l
