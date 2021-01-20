@@ -50,8 +50,6 @@ export default {
     async loadMap() {
       this.loading = true;
       let json = [];
-      let loc = await this.locations;
-      console.log(loc);
       this.locations.forEach(async (location) => {
         const response = await fetch(
           "https://api-adresse.data.gouv.fr/search/?q=" + location
