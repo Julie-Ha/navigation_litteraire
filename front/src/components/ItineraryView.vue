@@ -28,7 +28,7 @@ export default {
   },
   data() {
     return {
-      textFile: "text",
+      textFile: "bovary",
       text: "text",
       line: 300,
       locations: [],
