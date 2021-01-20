@@ -3,15 +3,6 @@
     <div>
       <br />
     </div>
-    <!-- <l-map :zoom="zoom" :center="center" style="height: 500px; width: 100%">
-      <l-tile-layer :url="url" :attribution="attribution" />
-      <l-geo-json
-        v-if="show"
-        :geojson="geojson"
-        :options="options"
-        :options-style="styleFunction"
-      />
-    </l-map> -->
     <section>
       <div id="map"></div>
     </section>
@@ -42,11 +33,13 @@ export default {
   },
   watch: {
     locations: function() {
+      this.loadCoords();
       this.loadMap();
     },
   },
   methods: {
     async initialiseMap() {
+      this.map = null;
       // initialize the map on the "map" div with a given center and zoom
       this.map = new L.Map("map", {
         zoom: 6,
@@ -58,7 +51,7 @@ export default {
         layer = new L.TileLayer(tileUrl, {
           attribution:
             'Maps © <a href="www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-          maxZoom: 18,
+          maxZoom: 5,
         });
 
       // add the layer to the map
@@ -72,25 +65,30 @@ export default {
         );
         let j = await response.json();
         if (j.features.length > 0) {
-          this.coords.push(j.features[0].geometry.coordinates);
+          this.coords.push([
+            j.features[0].geometry.coordinates[1],
+            j.features[0].geometry.coordinates[0],
+          ]);
         }
       });
     },
     async loadMap() {
-      await this.loadCoords();
-      console.log(this.coords);
-
-      this.map.fitBounds(this.coord);
-
-      this.marker = L.Marker.movingMarker(this.coord, 9000, {
-        autostart: true,
-      }).addTo(this.map);
-      L.polyline(this.coord, { color: "red" }).addTo(this.map);
+      this.marker = null;
+      if (this.coords.length > 1) {
+        this.map.fitBounds(this.coords);
+        this.marker = L.Marker.movingMarker(this.coords, 9000, {
+          autostart: true,
+        }).addTo(this.map);
+        L.polyline(this.coords, { color: "red" }).addTo(this.map);
+      }
     },
   },
-  async mounted() {
-    this.initialiseMap();
-    this.loadMap();
+  async created() {
+    this.loadCoords();
+    setTimeout(() => {
+      this.initialiseMap();
+      this.loadMap();
+    }, 1000);
   },
 };
 </script>

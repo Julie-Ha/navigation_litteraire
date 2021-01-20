@@ -11,7 +11,7 @@
         <label>N° de ligne </label>
         <input v-model="line" type="number" name="line" min="0" />
         <b-button type="submit" @click="loadText()" class="btnVal">OK</b-button>
-        <div>{{ locations }}</div> -->
+        <div>{{ locations }}</div>
       </div>
     </div>
   </div>
@@ -30,7 +30,7 @@ export default {
     return {
       textFile: "text",
       text: "text",
-      line: 0,
+      line: 300,
       locations: [],
       loaded: false,
     };
