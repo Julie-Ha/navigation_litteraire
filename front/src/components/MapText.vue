@@ -8,7 +8,7 @@
 import TextView from "./TextView";
 
 export default {
-  name: "Home",
+  name: "MapText",
   components: {
     TextView
   },

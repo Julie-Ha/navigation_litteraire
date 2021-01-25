@@ -10,10 +10,31 @@
       <b-collapse id="nav-collapse" is-nav>
         <div class="menu">
           <b-navbar-nav>
-            <b-nav-item to="/">Texte</b-nav-item>
-            <b-nav-item to="/locations">Lieux</b-nav-item>
-            <b-nav-item to="/itinerary">Itinéraires</b-nav-item>
-            <b-nav-item to="/upload">upload</b-nav-item>
+            <b-nav-item-dropdown text="Texte">
+              <b-dropdown-item href="#" class="dropdown-mine" variant="success"
+                ><b-nav-item to="/maptext" class="dark"
+                  >Carte avec lieux</b-nav-item
+                ></b-dropdown-item
+              >
+              <b-dropdown-item href="#" class="dropdown-mine"
+                ><b-nav-item to="/itinerarytext" class="dark"
+                  >Itinéraire</b-nav-item
+                ></b-dropdown-item
+              >
+            </b-nav-item-dropdown>
+            <b-nav-item-dropdown text="Lieux">
+              <b-dropdown-item href="#" class="dropdown-mine" variant="success"
+                ><b-nav-item to="/maplocations" class="dark"
+                  >Carte avec lieux</b-nav-item
+                ></b-dropdown-item
+              >
+              <b-dropdown-item href="#" class="dropdown-mine"
+                ><b-nav-item to="/itinerarylocations" class="dark"
+                  >Itinéraire</b-nav-item
+                ></b-dropdown-item
+              >
+            </b-nav-item-dropdown>
+            <b-nav-item to="/upload">Importer</b-nav-item>
           </b-navbar-nav>
         </div>
       </b-collapse>
@@ -40,9 +61,10 @@ export default {
   text-align: center;
   color: #fff;
   font-size: 1.6rem;
+  z-index: 100;
 }
 
 .dark .nav-link {
-   color: #009879 !important;
+  color: #009879 !important;
 }
 </style>

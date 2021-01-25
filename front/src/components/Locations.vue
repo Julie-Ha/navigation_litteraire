@@ -19,7 +19,8 @@
       </div>
 
       <div class="map col-sm-6 offset-sm-6 fixed-top">
-        <Map :locations="selectedLocations" />
+        <ItineraryMap v-if="normalmap == false" :locations="selectedLocations" />
+        <Map v-if="normalmap == true" :locations="selectedLocations" />
       </div>
     </div>
   </div>
@@ -28,12 +29,15 @@
 <script>
 import axios from "axios";
 import Map from "./Map";
+import ItineraryMap from "./ItineraryMap";
 
 export default {
-  name: "LocationsList",
+  name: "Locations",
   components: {
     Map,
+    ItineraryMap,
   },
+  props: ["normalmap"],
   data() {
     return {
       textFile: "text",

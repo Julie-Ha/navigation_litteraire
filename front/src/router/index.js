@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import MapView from '../components/MapView.vue'
-import LocationsList from '../components/LocationsList.vue'
-import ItineraryView from '../components/ItineraryView.vue'
+import MapText from '../components/MapText.vue'
+import ItineraryLocations from '../components/ItineraryLocations.vue'
+import MapLocations from '../components/MapLocations.vue'
+import ItineraryText from '../components/ItineraryText.vue'
 import Upload_file from '../components/Upload_file.vue'
 
 
@@ -11,18 +12,28 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'MapView',
-    component: MapView
+    name: 'MapText',
+    component: MapText
   },
   {
-    path: '/locations',
-    name: 'LocationsList',
-    component: LocationsList
+    path: '/maptext',
+    name: 'MapText',
+    component: MapText
   },
   {
-    path: '/itinerary',
-    name: 'ItineraryView',
-    component: ItineraryView
+    path: '/maplocations',
+    name: 'MapLocations',
+    component: MapLocations
+  },
+  {
+    path: '/itinerarytext',
+    name: 'ItineraryText',
+    component: ItineraryText
+  },
+  {
+    path: '/itinerarylocations',
+    name: 'ItineraryLocations',
+    component: ItineraryLocations
   },
   {
     path: '/upload',

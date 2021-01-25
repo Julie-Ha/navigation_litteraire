@@ -6,7 +6,7 @@
       </div>
 
       <div class="map col-sm-6 offset-sm-6 fixed-top">
-        <select v-model="text" @change="loadText">
+        <select class="textSelect" v-model="text" @change="loadText">
           <option
             v-for="text in textsList"
             :value="text.text"
@@ -19,11 +19,10 @@
         <ItineraryMap v-if="normalmap == false" :locations="locations" />
         <Map v-if="normalmap == true" :locations="locations" />
 
-        <b-button @click="previousPage()" class="btnVal"
+        <b-button style="background-color: #009879;" @click="previousPage()" class="btn"
           >Page précédente</b-button
         >
-        <b-button @click="nextPage()" class="btnVal">Page suivante</b-button>
-        <div>{{ locations }}</div>
+        <b-button style="background-color: #009879;" @click="nextPage()" class="btn">Page suivante</b-button>
       </div>
     </div>
   </div>
@@ -102,5 +101,13 @@ export default {
 
 .map {
   margin-top: 4rem;
+}
+
+.textSelect {
+    margin-top: 2rem;
+}
+
+.btn {
+    margin: 1rem;
 }
 </style>
