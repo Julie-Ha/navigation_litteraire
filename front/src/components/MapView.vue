@@ -1,6 +1,6 @@
 <template>
   <div class="itinerary">
-    <TextView :normalmap="false"/>
+    <TextView :normalmap="true"/>
   </div>
 </template>
 

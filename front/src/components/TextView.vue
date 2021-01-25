@@ -16,7 +16,8 @@
           </option>
         </select>
 
-        <Map :locations="locations" />
+        <ItineraryMap v-if="normalmap == false" :locations="locations" />
+        <Map v-if="normalmap == true" :locations="locations" />
 
         <b-button @click="previousPage()" class="btnVal"
           >Page précédente</b-button
@@ -31,12 +32,15 @@
 <script>
 import axios from "axios";
 import Map from "./Map";
+import ItineraryMap from "./ItineraryMap";
 
 export default {
-  name: "Home",
+  name: "TextView",
   components: {
     Map,
+    ItineraryMap,
   },
+  props: ["normalmap"],
   data() {
     return {
       textsList: [],
