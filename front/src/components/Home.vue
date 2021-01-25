@@ -7,16 +7,21 @@
 
       <div class="map col-sm-6 offset-sm-6 fixed-top">
         <select v-model="text" @change="loadText">
-          <option v-for="text in textsList" :value="text.text" :key="text.value">
+          <option
+            v-for="text in textsList"
+            :value="text.text"
+            :key="text.value"
+          >
             {{ text.text }}
           </option>
         </select>
 
         <Map :locations="locations" />
 
-        <label>N° de ligne </label>
-        <input v-model="line" type="number" name="line" min="0" />
-        <b-button type="submit" @click="loadText()" class="btnVal">OK</b-button>
+        <b-button @click="previousPage()" class="btnVal"
+          >Page précédente</b-button
+        >
+        <b-button @click="nextPage()" class="btnVal">Page suivante</b-button>
         <div>{{ locations }}</div>
       </div>
     </div>
@@ -37,7 +42,8 @@ export default {
       textsList: [],
       text: "bovary",
       textContent: "text",
-      line: 0,
+      startChar: 0,
+      action: "",
       locations: [],
       loaded: false,
     };
@@ -50,17 +56,28 @@ export default {
         .get(
           "http://127.0.0.1:5000/get-annotated-text?text=" +
             this.text +
-            "&line=" +
-            this.line
+            "&char=" +
+            this.startChar +
+            "&action=" +
+            this.action
         )
         .then((response) => {
           this.locations = response.data.locations;
           this.textContent = response.data.text;
+          this.startChar = response.data.char;
         });
 
       await axios.get("http://127.0.0.1:5000/getList").then((response) => {
         this.textsList = response.data;
       });
+    },
+    async nextPage() {
+      this.action = "next";
+      this.loadText();
+    },
+    async previousPage() {
+      this.action = "previous";
+      this.loadText();
     },
   },
   async created() {

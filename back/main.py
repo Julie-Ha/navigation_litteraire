@@ -22,16 +22,32 @@ def index():
 
 @app.route('/get-annotated-text')
 def getAnnotatedText():
+    nbChars = 5000
+
     textFile = request.args.get('text')
-    line = request.args.get('line', default=0, type=int)
-    print(request.args.get('line'))
+    action = request.args.get('action')
+    if action == "previous":
+        endChar = request.args.get('char', default=0, type=int) - nbChars
 
-    with open("texts/"+textFile+".txt", "r", encoding="utf-8") as f:
-     text = ""
-     for l in f.readlines()[line:line+50]:
-          text = text + l
+        if endChar > 0:
+            startChar = endChar - nbChars
+        else:
+            startChar = 0
+            endChar = nbChars
 
-    doc = nlp(text)
+    else:
+        startChar = request.args.get('char', default=0, type=int)
+        endChar = startChar + nbChars
+
+
+    # with open("texts/"+textFile+".txt", "r", encoding="utf-8") as f:
+    #  text = ""
+    #  for l in f.readlines()[line:line+50]:
+    #       text = text + l
+
+    text = open("texts/"+textFile+".txt", "r", encoding="utf-8").read()
+
+    doc = nlp(text[startChar:endChar]) #0 - 1000 #1000 - 2000 # 
     
     locations = []
 
@@ -51,6 +67,7 @@ def getAnnotatedText():
     data = {}
     data['locations'] = locations
     data['text'] =  annotations
+    data['char'] = endChar
     json_data = json.dumps(data)
 
     return json_data

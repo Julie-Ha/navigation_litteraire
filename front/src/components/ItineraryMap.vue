@@ -12,7 +12,6 @@
 <script>
 import "./lib/MovingMarker.js";
 import L from "leaflet";
-
 export default {
   name: "ItineraryMap",
   props: ["locations"],
@@ -36,7 +35,6 @@ export default {
       setTimeout(() => {
         this.loadCoords();
       }, 1000);
-
       setTimeout(() => {
         this.initialiseMap();
         this.loadMap();
@@ -54,7 +52,6 @@ export default {
         zoom: 6,
         minZoom: 3,
       });
-
       // create a new tile layer
       let tileUrl = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
         layer = new L.TileLayer(tileUrl, {
@@ -62,7 +59,6 @@ export default {
             'Maps © <a href="www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
           maxZoom: 5,
         });
-
       // add the layer to the map
       this.map.addLayer(layer);
     },
@@ -96,7 +92,6 @@ export default {
     setTimeout(() => {
       this.loadCoords();
     }, 1000);
-
     setTimeout(() => {
       this.initialiseMap();
       this.loadMap();
