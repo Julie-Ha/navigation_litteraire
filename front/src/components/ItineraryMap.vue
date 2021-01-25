@@ -33,13 +33,22 @@ export default {
   },
   watch: {
     locations: function() {
-      this.loadCoords();
-      this.loadMap();
+      setTimeout(() => {
+        this.loadCoords();
+      }, 1000);
+
+      setTimeout(() => {
+        this.initialiseMap();
+        this.loadMap();
+      }, 2000);
     },
   },
   methods: {
     async initialiseMap() {
-      this.map = null;
+      if(this.map) {
+        this.map.remove();
+      }
+      
       // initialize the map on the "map" div with a given center and zoom
       this.map = new L.Map("map", {
         zoom: 6,
@@ -84,11 +93,14 @@ export default {
     },
   },
   async created() {
-    this.loadCoords();
+    setTimeout(() => {
+      this.loadCoords();
+    }, 1000);
+
     setTimeout(() => {
       this.initialiseMap();
       this.loadMap();
-    }, 1000);
+    }, 2000);
   },
 };
 </script>
