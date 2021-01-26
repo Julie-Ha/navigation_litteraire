@@ -103,8 +103,12 @@ export default {
 #map {
   height: 500px;
   width: 100%;
-  z-index: -1;
 }
+
+/* .map {
+  z-index: -1;
+} */
+
 section {
   height: 100%;
 }

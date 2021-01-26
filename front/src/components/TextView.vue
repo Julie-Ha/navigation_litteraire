@@ -6,7 +6,7 @@
       </div>
 
       <div class="map col-sm-6 offset-sm-6 fixed-top">
-        <select class="textSelect" v-model="text" @change="loadText">
+        <b-form-select class="textSelect" v-model="text" @change="loadText">
           <option
             v-for="text in textsList"
             :value="text.text"
@@ -14,15 +14,24 @@
           >
             {{ text.text }}
           </option>
-        </select>
+        </b-form-select>
+        
 
         <ItineraryMap v-if="normalmap == false" :locations="locations" />
         <Map v-if="normalmap == true" :locations="locations" />
 
-        <b-button style="background-color: #009879;" @click="previousPage()" class="btn"
+        <b-button
+          style="background-color: #009879;"
+          @click="previousPage()"
+          class="btn"
           >Page précédente</b-button
         >
-        <b-button style="background-color: #009879;" @click="nextPage()" class="btn">Page suivante</b-button>
+        <b-button
+          style="background-color: #009879;"
+          @click="nextPage()"
+          class="btn"
+          >Page suivante</b-button
+        >
       </div>
     </div>
   </div>
@@ -43,7 +52,7 @@ export default {
   data() {
     return {
       textsList: [],
-      text: "bovary",
+      text: "lys",
       textContent: "text",
       startChar: 0,
       action: "",
@@ -104,10 +113,10 @@ export default {
 }
 
 .textSelect {
-    margin-top: 2rem;
+  margin-top: 1rem;
 }
 
 .btn {
-    margin: 1rem;
+  margin: 1rem;
 }
 </style>

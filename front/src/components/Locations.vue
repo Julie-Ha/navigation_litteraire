@@ -19,7 +19,19 @@
       </div>
 
       <div class="map col-sm-6 offset-sm-6 fixed-top">
-        <ItineraryMap v-if="normalmap == false" :locations="selectedLocations" />
+        <b-form-select class="textSelect" v-model="text" @change="loadLocations">
+          <option
+            v-for="text in textsList"
+            :value="text.text"
+            :key="text.value"
+          >
+            {{ text.text }}
+          </option>
+        </b-form-select>
+        <ItineraryMap
+          v-if="normalmap == false"
+          :locations="selectedLocations"
+        />
         <Map v-if="normalmap == true" :locations="selectedLocations" />
       </div>
     </div>
@@ -40,7 +52,8 @@ export default {
   props: ["normalmap"],
   data() {
     return {
-      textFile: "text",
+      textsList: [],
+      text: "lys",
       locations: [],
       selectedLocations: [],
       loaded: false,
@@ -51,10 +64,14 @@ export default {
       this.locations = [];
 
       await axios
-        .get("http://127.0.0.1:5000/get-locations?text=" + this.textFile)
+        .get("http://127.0.0.1:5000/get-locations?text=" + this.text)
         .then((response) => {
           this.locations = response.data;
         });
+
+      await axios.get("http://127.0.0.1:5000/getList").then((response) => {
+        this.textsList = response.data;
+      });
     },
   },
   async created() {

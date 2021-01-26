@@ -61,10 +61,10 @@ export default {
   text-align: center;
   color: #fff;
   font-size: 1.6rem;
-  z-index: 100;
 }
 
 .dark .nav-link {
   color: #009879 !important;
 }
+
 </style>

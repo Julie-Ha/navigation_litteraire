@@ -80,7 +80,7 @@ def getLocations():
     # with open("texts/bovary.txt", "r", encoding="utf-8") as f:
     #     text = f.readlines()
 
-    text = open("texts/bovary.txt", 'r', encoding="utf-8").read()
+    text = open("texts/"+textFile+".txt", 'r', encoding="utf-8").read()
 
     doc = nlp(text[0:100000]) #100 000 premiers caractères à la place de tout le texte
     
