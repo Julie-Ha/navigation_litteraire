@@ -7,6 +7,7 @@
     <l-map :zoom="zoom" :center="center" style="height: 500px; width: 100%">
       <l-tile-layer :url="url" :attribution="attribution" />
       <l-geo-json
+        @click="searchInText"
         v-if="show"
         :geojson="geojson"
         :options="options"
@@ -43,7 +44,7 @@ export default {
   },
   watch: {
     locations: function() {
-        this.loadMap();
+      this.loadMap();
     },
   },
   methods: {
@@ -61,6 +62,9 @@ export default {
       });
       this.geojson = json;
       this.loading = false;
+    },
+    async searchInText(event) {
+      console.log(event.layer.feature.properties.name);
     },
   },
   computed: {
@@ -86,12 +90,10 @@ export default {
         return () => {};
       }
       return (feature, layer) => {
-        layer.bindTooltip(
-          "<div>" +
-            feature.properties.name +
-            "</div>",
-          { permanent: false, sticky: true }
-        );
+        layer.bindTooltip("<div>" + feature.properties.name + "</div>", {
+          permanent: false,
+          sticky: true,
+        });
       };
     },
   },
