@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="row">
-      <div class="col-sm-6">
+      <div class="text-col col-sm-6">
         <div class="text" v-html="textContent">{{ textContent }}</div>
       </div>
 
@@ -15,10 +15,13 @@
             {{ text.text }}
           </option>
         </b-form-select>
-        
 
         <ItineraryMap v-if="normalmap == false" :locations="locations" />
-        <Map v-if="normalmap == true" :locations="locations" />
+        <Map
+          v-if="normalmap == true"
+          :locations="locations"
+          @myEvent="scrollText"
+        />
 
         <b-button
           style="background-color: #009879;"
@@ -90,6 +93,20 @@ export default {
     async previousPage() {
       this.action = "previous";
       this.loadText();
+    },
+    async scrollText(loc) {
+      const el = this.$el.getElementsByClassName(loc)[0];
+      console.log(el);
+
+      if (el) {
+        // Use el.scrollIntoView() to instantly scroll to the element
+        // el.scrollIntoView({ behavior: "smooth" });
+        // window.scrollTo(0, el.offsetTop-50);
+        window.scrollTo({
+          top: el.offsetTop-50,
+          behavior: "smooth",
+        });
+      }
     },
   },
   async created() {

@@ -54,7 +54,7 @@ def getAnnotatedText():
     annotations = "<p>"
     for token in doc:
         if token.ent_type_ == "LOC":
-            annotations = annotations + ' ' + '<span class="loc">' + token.text + '</span>'
+            annotations = annotations + ' ' + '<span class="loc ' + token.text + '">' + token.text + '</span>'
             locations.append(token.text)
         elif token.text == "," or token.text == "." or token.text == ";":
             annotations = annotations + token.text 

@@ -65,6 +65,10 @@ export default {
     },
     async searchInText(event) {
       console.log(event.layer.feature.properties.name);
+
+      this.$emit('myEvent', event.layer.feature.properties.name);
+
+      
     },
   },
   computed: {
