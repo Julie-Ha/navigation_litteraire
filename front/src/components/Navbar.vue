@@ -56,7 +56,7 @@ export default {
   width: 100%;
   bottom: 0;
   display: flex;
-  align-items: center;
+  align-items: left;
   flex-direction: column;
   text-align: center;
   color: #fff;
